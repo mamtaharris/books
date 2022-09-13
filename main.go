@@ -1,19 +1,24 @@
 package main
 
 import (
-	"net/http"
-
-	"github.com/gin-gonic/gin"
+	_ "github.com/mamtaharris/books/docs"
+	"github.com/mamtaharris/books/routes"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+// @title 			Bookstore API
+// @version         1.0
+// @description     A book management service API in Go using Gin framework.
+
+// @contact.name   Mamta Harris
+// @contact.url    https://google.com/
+// @contact.email  mamta@gmail.com;harris@gmail.com
+
+// @host      localhost:8080
+// @BasePath  /v1
 func main() {
-	router := gin.New()
-
-	router.GET("/ping", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
-
-	router.Run()
+	router := routes.SetupRouter()
+	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	router.Run(":8080")
 }
